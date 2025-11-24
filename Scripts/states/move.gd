@@ -9,7 +9,6 @@ func physics_update(_delta: float) -> void:
 		transition.emit(state_idle)
 	move(input_dir)
 
-
 func move(dir:Vector2) -> void:
 	if actor.facing_direction and actor.facing_direction != dir:
 		actor.facing_direction = dir

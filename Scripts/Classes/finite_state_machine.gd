@@ -34,14 +34,19 @@ func _ready() -> void:
 		debug_label.position = Vector2(0, 0)
 
 func _on_actor_input_action_1(input: bool) -> void:
-	current_state.input_action_1 = input
+	if actor.is_in_group("player"):
+		return
+	var state = current_state as State
+	state.input_action_1 = input
 
 func _on_actor_input_action_2(input: bool) -> void:
-	current_state.input_action_2 = input
+	if actor.is_in_group("player"):
+		return
+	var state = current_state as State
+	state.input_action_2 = input
 
 func _on_actor_input_dir(direction: Vector2) -> void:
 	current_state.input_dir = direction
-
 
 func _process(delta: float) -> void:
 	if current_state: current_state.update(delta)

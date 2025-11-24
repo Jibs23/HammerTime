@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d35vcl273s34i"]
+[gd_scene load_steps=14 format=3 uid="uid://d35vcl273s34i"]
 
 [ext_resource type="Script" uid="uid://dsc3muhjtycr" path="res://Scripts/player.gd" id="1_i6g32"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="2_wowpa"]
@@ -7,20 +7,32 @@
 [ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="5_v158k"]
 [ext_resource type="Script" uid="uid://dkheav4fupoy2" path="res://Scripts/states/idle.gd" id="6_1l0tm"]
 [ext_resource type="Script" uid="uid://swwpijbfoat8" path="res://Scripts/states/move.gd" id="7_v158k"]
+[ext_resource type="Script" uid="uid://bnc6cyfk50dj" path="res://Scripts/Classes/physicsWeapon.gd" id="8_v158k"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ldgsr"]
+radius = 63.03174
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o5yvi"]
+radius = 63.007935
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1l0tm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1l0tm"]
+size = Vector2(295, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v158k"]
+size = Vector2(46, 99)
 
 [node name="Game" type="Node"]
 
 [node name="Level" type="Node2D" parent="."]
 
-[node name="Character2D" type="CharacterBody2D" parent="Level" node_paths=PackedStringArray("hit_box", "sprite_sheet", "collide_box", "health_component", "animation_player", "state_machine")]
+[node name="Character2D" type="CharacterBody2D" parent="Level" node_paths=PackedStringArray("weapon", "hit_box", "sprite_sheet", "collide_box", "health_component", "animation_player", "state_machine") groups=["player"]]
 collision_layer = 4
 collision_mask = 4
 motion_mode = 1
 script = ExtResource("1_i6g32")
+weapon = NodePath("Weapon")
 hit_box = NodePath("HitBox2D")
 sprite_sheet = NodePath("Sprite2D")
 collide_box = NodePath("CollisionShape2D")
@@ -28,6 +40,9 @@ health_component = NodePath("HealthComponent")
 animation_player = NodePath("AnimationPlayer")
 state_machine = NodePath("StateMachine")
 metadata/_custom_type_script = "uid://b3rwp6d7gjlcf"
+
+[node name="Sprite2D" type="Sprite2D" parent="Level/Character2D"]
+texture = ExtResource("4_1l0tm")
 
 [node name="HealthComponent" type="Node" parent="Level/Character2D"]
 script = ExtResource("2_wowpa")
@@ -44,9 +59,6 @@ debug_color = Color(0.9589688, 0, 0.52688795, 0.41960785)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Character2D"]
 shape = SubResource("CircleShape2D_o5yvi")
-
-[node name="Sprite2D" type="Sprite2D" parent="Level/Character2D"]
-texture = ExtResource("4_1l0tm")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Level/Character2D"]
 
@@ -67,8 +79,29 @@ script = ExtResource("7_v158k")
 state_idle = NodePath("../Idle")
 metadata/_custom_type_script = "uid://55kpmp4krpql"
 
+[node name="Weapon" type="RigidBody2D" parent="Level/Character2D"]
+collision_layer = 2
+physics_material_override = SubResource("PhysicsMaterial_1l0tm")
+center_of_mass_mode = 1
+center_of_mass = Vector2(275, 0)
+angular_damp = 1.0
+script = ExtResource("8_v158k")
+metadata/_custom_type_script = "uid://bnc6cyfk50dj"
+
+[node name="PinJoint2D" type="PinJoint2D" parent="Level/Character2D/Weapon"]
+node_a = NodePath("..")
+node_b = NodePath("../..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Character2D/Weapon"]
+position = Vector2(148, 0)
+shape = SubResource("RectangleShape2D_1l0tm")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Level/Character2D/Weapon"]
+position = Vector2(296, -1)
+shape = SubResource("RectangleShape2D_v158k")
+
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[connection signal="input_action_1" from="Level/Character2D" to="Level/Character2D/StateMachine" method="_on_actor_input_action_1"]
-[connection signal="input_action_2" from="Level/Character2D" to="Level/Character2D/StateMachine" method="_on_actor_input_action_2"]
+[connection signal="action_1" from="Level/Character2D" to="Level/Character2D/StateMachine" method="_on_actor_input_action_1"]
+[connection signal="action_2" from="Level/Character2D" to="Level/Character2D/StateMachine" method="_on_actor_input_action_2"]
 [connection signal="input_dir" from="Level/Character2D" to="Level/Character2D/StateMachine" method="_on_actor_input_dir"]

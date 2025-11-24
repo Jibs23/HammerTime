@@ -18,8 +18,8 @@ class_name Character2D extends CharacterBody2D
 signal facing_direction_changed(new_direction: Vector2)
 
 signal input_dir(direction: Vector2)
-signal input_action_1(input: bool)
-signal input_action_2(input: bool)
+signal action_1(input: bool)
+signal action_2(input: bool)
 
 enum TurnDirection { AROUND, LEFT, RIGHT }
 

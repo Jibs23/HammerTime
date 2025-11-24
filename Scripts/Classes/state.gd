@@ -6,8 +6,8 @@ var state_ready: bool = true
 var state_machine: StateMachine
 var actor: Node
 var input_dir: Vector2 = Vector2.ZERO
-var input_action: bool = false
-var input_interact: bool = false
+var input_action_1: bool = false
+var input_action_2: bool = false
 
 ## Used by the stateMachine to talk to the AnimationPlayer and swap animations.
 @export var animation_id: String = ""
@@ -31,8 +31,8 @@ func request_transition(to_state: State) -> void:
 ## Reset the input variables to their default states.
 func reset_inputs() -> void:
 	input_dir = Vector2.ZERO
-	input_action = false
-	input_interact = false
+	input_action_1 = false
+	input_action_2 = false
 
 func pre_enter() -> void:
 	enter()
