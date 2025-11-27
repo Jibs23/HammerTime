@@ -1,20 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgoy23tjkumpe"]
+[gd_scene load_steps=10 format=3 uid="uid://dgoy23tjkumpe"]
 
-[ext_resource type="Script" uid="uid://scfs8oqbx1xi" path="res://Scenes/enemies/Runner/enemy_ai_pursuit.gd" id="1_5d1s0"]
+[ext_resource type="Script" uid="uid://lp0wln500jpy" path="res://Scripts/Classes/enemy.gd" id="1_quxat"]
 [ext_resource type="Shape2D" uid="uid://bbg450kn54ejt" path="res://Shapes/coll_norm.tres" id="2_tm0ch"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_tm0ch"]
 [ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="4_ulvqc"]
 [ext_resource type="Script" uid="uid://bw6hejvpvmqbb" path="res://Scripts/states/pursuit.gd" id="5_5d1s0"]
 [ext_resource type="Script" uid="uid://cuhbohka8opeu" path="res://Scripts/states/enemy_idle.gd" id="6_5d1s0"]
+[ext_resource type="Script" uid="uid://sgyeob3hmfxb" path="res://Scripts/personal_space.gd" id="7_vskj4"]
+[ext_resource type="Script" uid="uid://csrxxds2tne84" path="res://Scripts/debug_label.gd" id="8_w2043"]
 
-[node name="Enemy" type="RigidBody2D" node_paths=PackedStringArray("health_component", "state_machine") groups=["enemy"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_w2043"]
+radius = 14.035668
+
+[node name="Enemy_runner" type="RigidBody2D" node_paths=PackedStringArray("health_component", "state_machine") groups=["enemy", "enemy_runner"]]
 collision_layer = 4
 collision_mask = 260
 lock_rotation = true
 contact_monitor = true
 max_contacts_reported = 1
 linear_damp = 3.0
-script = ExtResource("1_5d1s0")
+script = ExtResource("1_quxat")
 health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
 metadata/_custom_type_script = "uid://lp0wln500jpy"
@@ -24,6 +29,7 @@ shape = ExtResource("2_tm0ch")
 
 [node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("shape_to_flash")]
 script = ExtResource("3_tm0ch")
+max_health = 1
 shape_to_flash = NodePath("../CollisionShape2D")
 metadata/_custom_type_script = "uid://d3farf02gkq8e"
 
@@ -35,7 +41,6 @@ metadata/_custom_type_script = "uid://b3u4aiy6bgk1c"
 
 [node name="Pursuit" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_idle")]
 script = ExtResource("5_5d1s0")
-move_speed = 100.0
 state_idle = NodePath("../Idle")
 metadata/_custom_type_script = "uid://55kpmp4krpql"
 
@@ -45,7 +50,36 @@ move_state = NodePath("../Pursuit")
 state_idle = NodePath(".")
 metadata/_custom_type_script = "uid://dkheav4fupoy2"
 
+[node name="Personal Space" type="Area2D" parent="."]
+visible = false
+collision_mask = 4
+script = ExtResource("7_vskj4")
+valid_groups = Dictionary[String, int]({
+"enemy": 0,
+"enemy_flanker": 0,
+"enemy_runner": 1,
+"enemy_shield": 1,
+"enemy_shooter": 0,
+"player": 0
+})
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Personal Space"]
+shape = SubResource("CircleShape2D_w2043")
+debug_color = Color(0.92681, 0.9257303, 1, 0.08235294)
+
+[node name="Label" type="Label" parent="." node_paths=PackedStringArray("target_node")]
+offset_left = -23.0
+offset_top = -34.0
+offset_right = 29.0
+offset_bottom = -11.0
+text = "HP"
+script = ExtResource("8_w2043")
+referenced_variable = "current_health"
+target_node = NodePath("../HealthComponent")
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="hit" from="." to="HealthComponent" method="_on_value_received"]
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
 [connection signal="health_empty" from="HealthComponent" to="." method="die"]
+[connection signal="body_entered" from="Personal Space" to="Personal Space" method="_on_body_entered"]
+[connection signal="body_exited" from="Personal Space" to="Personal Space" method="_on_body_exited"]

@@ -90,7 +90,9 @@ rotate_item_ccw={
 
 [layer_names]
 
+2d_physics/layer_1="personal space"
 2d_physics/layer_3="character"
+2d_physics/layer_4="solid"
 2d_physics/layer_9="weapon"
 
 [physics]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://d35vcl273s34i"]
+[gd_scene load_steps=4 format=3 uid="uid://d35vcl273s34i"]
 
 [ext_resource type="Script" uid="uid://d10y1mhqwveps" path="res://Scripts/game.gd" id="1_3dryh"]
 [ext_resource type="PackedScene" uid="uid://dg382sc10qhfs" path="res://Scenes/player.tscn" id="1_qxrlw"]
-[ext_resource type="PackedScene" uid="uid://dgoy23tjkumpe" path="res://Scenes/enemies/enemy.tscn" id="2_wrm1d"]
 [ext_resource type="Script" uid="uid://biskcokq6irx" path="res://Scripts/enemy_manager.gd" id="3_wowpa"]
 
 [node name="Game" type="Node"]
@@ -12,12 +11,29 @@ script = ExtResource("1_3dryh")
 
 [node name="Player" parent="Level" instance=ExtResource("1_qxrlw")]
 
-[node name="Enemy Manager" type="Node" parent="Level"]
+[node name="Enemy Manager" type="Node2D" parent="Level"]
 script = ExtResource("3_wowpa")
 
-[node name="Enemy" parent="Level/Enemy Manager" instance=ExtResource("2_wrm1d")]
-position = Vector2(459, 39)
+[node name="SpawnTimer" type="Timer" parent="Level/Enemy Manager"]
+autostart = true
+
+[node name="Spawn_TL" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
+position = Vector2(-600, -360)
+gizmo_extents = 41.2
+
+[node name="Spawn_TR" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
+position = Vector2(600, -360)
+gizmo_extents = 41.2
+
+[node name="Spawn_DL" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
+position = Vector2(-600, 360)
+gizmo_extents = 41.2
+
+[node name="Spawn_DR" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
+position = Vector2(600, 360)
+gizmo_extents = 41.2
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [connection signal="tree_entered" from="Level/Enemy Manager" to="Level/Enemy Manager" method="_on_tree_entered"]
+[connection signal="timeout" from="Level/Enemy Manager/SpawnTimer" to="Level/Enemy Manager" method="_on_timer_timeout"]

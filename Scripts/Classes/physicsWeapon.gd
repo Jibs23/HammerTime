@@ -1,54 +1,51 @@
 @icon("res://Assets/Editor Icons/icon_sword.png")
 extends RigidBody2D
 class_name PhysicsWeapon
-
 @export var swing_cooldown: float = 2
-@export var swing_distance:float = 90
-@export var rotation_speed: float = 2
+@export_range(10, 1000, 1, "radians_as_degrees") var swing_distance: float = 300
+## Rotation speed in radians per second.
+@export_range(0.1, 200, 0.1,"radians_as_degrees") var rotation_speed: float = 3.14:
+	get:
+		return (rotation_speed*2)
+
+## Max rotations speed in radians per second.
+@export_range(0.1, 600, 0.1,"radians_as_degrees") var max_speed: float = 6.28
+
 @export var dmg_threshold: Curve = Curve.new()
-var max_speed:float = 2
+@export_range(0.1, 600, 0.1,"radians_as_degrees") var min_dmg_speed: float = 6.28
+
 var swing_cooldown_timer: Timer
 
-var dmg: int:
-	get:
-		var output:int = dmg_threshold.sample(abs(angular_velocity)) 
-		return output
-
-
-func add_rotation(dir:bool,amount:float):
-	if dir:
-		angular_velocity += amount
-	else:
-		angular_velocity -= amount
+func add_rotation(amount:float,impulse:bool):
+		if impulse:
+			apply_torque_impulse(amount)
+		else:
+			apply_torque(amount*center_of_mass.x*mass)
 
 ## gradually rotate the weapon. if dir = true it will rotate clockwise, else counter-clockwise.
 func rotate_weapon(dir:bool):
-	var intended = rotation_speed if dir else -rotation_speed
+	var intended:float = rotation_speed if dir else -rotation_speed
 	# if we're already at/above max speed and the intended change is in the same direction, block
 	if abs(angular_velocity) >= abs(max_speed) and angular_velocity * intended > 0:
 		return
-	add_rotation(dir, rotation_speed)
+	add_rotation(intended,false)
 
 ## swiftly rotate the weapon, and start a cooldown. if dir = true it will rotate clockwise, else counter-clockwise.
 func swing_weapon(dir:bool):
 	if swing_cooldown_timer: return
 	if dir:
-		angular_velocity += swing_distance
-		print("swinging weapon1")
+		add_rotation(swing_distance,true)
 	else:
-		angular_velocity -= swing_distance
-		print("swinging weapon2")
+		add_rotation(-swing_distance,true)
 	swing_cooldown_timer = start_cooldown(swing_cooldown)
 
 func wpn_action_1(held:bool):
 	if !held: return
 	swing_weapon(false)
-	print("swung1")
 
 func wpn_action_2(held:bool):
 	if !held: return
 	swing_weapon(true)
-	print("swung2")
 
 	
 func start_cooldown(time:float) -> Timer:
@@ -81,14 +78,19 @@ func _enter_tree() -> void:
 	player.connect("wpn_rotate",Callable(self,"rotate_weapon"))
 	print(self.name," set as player weapon.")
 
-func _on_body_entered(body: Node) -> void:
-	if body.is_in_group("enemy"):
-		print("Weapon collided with ", body.name)
-		if dmg <= 0:
-			print("No damage to deal.")
+func calc_dammage() -> int:
+	var speed_ratio: float = (abs(angular_velocity) / max_speed)
+	var output: int = int(roundf(dmg_threshold.sample(speed_ratio)))
+	print("Calculated Dammage: ", output, " (Speed Ratio: ", speed_ratio, ")")
+	return output
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.has_signal("hit"):
+		var calc_dmg: int = calc_dammage()
+		if calc_dmg <= 0:
 			return
-		if body.has_signal("hit"):
-			body.emit_signal("hit", dmg, self)
-			print("Dealt ", dmg, " damage to ", body.name)
-		else:
-			print(body.name, " has no 'hit' signal to deal damage to.")
+		body.emit_signal("hit", calc_dmg, self)
+	else:
+		print(body.name, " has no 'hit' signal to deal damage to.")
+	
+

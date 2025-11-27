@@ -1,0 +1,106 @@
+[gd_scene load_steps=13 format=3 uid="uid://cuk2crwvpedu"]
+
+[ext_resource type="Script" uid="uid://dhjukqb0ph4qw" path="res://Scenes/enemies/Shield/enemy_shield.gd" id="1_wgm1h"]
+[ext_resource type="Shape2D" uid="uid://bbg450kn54ejt" path="res://Shapes/coll_norm.tres" id="2_epr0g"]
+[ext_resource type="Script" uid="uid://gj0p8riiisk1" path="res://Scenes/enemies/Shield/shield.gd" id="2_tu8kc"]
+[ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_hffj4"]
+[ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="4_ixho8"]
+[ext_resource type="Script" uid="uid://bw6hejvpvmqbb" path="res://Scripts/states/pursuit.gd" id="5_s4o70"]
+[ext_resource type="Script" uid="uid://cuhbohka8opeu" path="res://Scripts/states/enemy_idle.gd" id="6_uptqb"]
+[ext_resource type="Script" uid="uid://sgyeob3hmfxb" path="res://Scripts/personal_space.gd" id="8_dp0xj"]
+[ext_resource type="Script" uid="uid://csrxxds2tne84" path="res://Scripts/debug_label.gd" id="9_pvw13"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wgm1h"]
+bounce = 0.2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wgm1h"]
+size = Vector2(24, 11)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tu8kc"]
+radius = 91.02197
+
+[node name="Enemy_shield" type="RigidBody2D" node_paths=PackedStringArray("health_component", "state_machine") groups=["enemy", "enemy_shield"]]
+collision_layer = 4
+collision_mask = 260
+mass = 2.0
+lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 1
+linear_damp = 3.0
+script = ExtResource("1_wgm1h")
+health_component = NodePath("HealthComponent")
+state_machine = NodePath("StateMachine")
+metadata/_custom_type_script = "uid://lp0wln500jpy"
+
+[node name="Shield" type="StaticBody2D" parent="." groups=["shield"]]
+collision_layer = 8
+collision_mask = 256
+physics_material_override = SubResource("PhysicsMaterial_wgm1h")
+script = ExtResource("2_tu8kc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Shield"]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_wgm1h")
+debug_color = Color(0.5913, 0.624105, 0.81, 0.5803922)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["player"]]
+shape = ExtResource("2_epr0g")
+debug_color = Color(0.4117647, 0.47058824, 1, 0.41960785)
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("shape_to_flash")]
+script = ExtResource("3_hffj4")
+max_health = 2
+shape_to_flash = NodePath("../CollisionShape2D")
+metadata/_custom_type_script = "uid://d3farf02gkq8e"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "actor")]
+script = ExtResource("4_ixho8")
+initial_state = NodePath("Idle")
+actor = NodePath("..")
+metadata/_custom_type_script = "uid://b3u4aiy6bgk1c"
+
+[node name="Pursuit" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_idle")]
+script = ExtResource("5_s4o70")
+state_idle = NodePath("../Idle")
+metadata/_custom_type_script = "uid://55kpmp4krpql"
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state", "state_idle")]
+script = ExtResource("6_uptqb")
+move_state = NodePath("../Pursuit")
+state_idle = NodePath(".")
+metadata/_custom_type_script = "uid://dkheav4fupoy2"
+
+[node name="Personal Space" type="Area2D" parent="."]
+visible = false
+collision_mask = 4
+script = ExtResource("8_dp0xj")
+valid_groups = Dictionary[String, int]({
+"enemy": 0,
+"enemy_flanker": 0,
+"enemy_runner": 0,
+"enemy_shield": 1,
+"enemy_shooter": 0,
+"player": 0
+})
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Personal Space"]
+shape = SubResource("CircleShape2D_tu8kc")
+debug_color = Color(0.92681, 0.9257303, 1, 0.08235294)
+
+[node name="Label" type="Label" parent="." node_paths=PackedStringArray("target_node")]
+offset_left = -23.0
+offset_top = -34.0
+offset_right = 29.0
+offset_bottom = -11.0
+text = "HP"
+script = ExtResource("9_pvw13")
+referenced_variable = "current_health"
+target_node = NodePath("../HealthComponent")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="hit" from="." to="HealthComponent" method="_on_value_received"]
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
+[connection signal="hit" from="Shield" to="Shield" method="_on_hit"]
+[connection signal="health_empty" from="HealthComponent" to="." method="die"]
+[connection signal="body_entered" from="Personal Space" to="Personal Space" method="_on_body_entered"]
+[connection signal="body_exited" from="Personal Space" to="Personal Space" method="_on_body_exited"]

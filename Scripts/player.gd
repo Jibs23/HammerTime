@@ -5,7 +5,7 @@ var can_rotate_weapon: bool = true
 
 signal wpn_rotate(dir:bool)
 	
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	signal_dir(get_ui_direction())
 	wpn_actions()
 
