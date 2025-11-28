@@ -1,0 +1,112 @@
+[gd_scene load_steps=13 format=3 uid="uid://7r7nsiw5c1sh"]
+
+[ext_resource type="Script" uid="uid://dodb1uf4web4t" path="res://Scenes/enemies/Shooter/enemy_shooter.gd" id="1_b3xtc"]
+[ext_resource type="Shape2D" uid="uid://bbg450kn54ejt" path="res://Shapes/coll_norm.tres" id="2_35mkr"]
+[ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_4kvfp"]
+[ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="4_rp1hp"]
+[ext_resource type="Script" uid="uid://bw6hejvpvmqbb" path="res://Scripts/states/pursuit.gd" id="5_e1uhq"]
+[ext_resource type="Script" uid="uid://cbk4fxvsilclq" path="res://Scenes/enemies/Shooter/idle.gd" id="6_b3xtc"]
+[ext_resource type="Script" uid="uid://sgyeob3hmfxb" path="res://Scripts/personal_space.gd" id="7_rrekk"]
+[ext_resource type="Script" uid="uid://csrxxds2tne84" path="res://Scripts/debug_label.gd" id="8_3q1cy"]
+[ext_resource type="Script" uid="uid://ct6f1rjjpxe0y" path="res://Scenes/enemies/Shooter/gun.gd" id="9_5sv12"]
+[ext_resource type="PackedScene" uid="uid://63mcicmr7q4n" path="res://Scenes/enemies/Shooter/bullet.tscn" id="10_rdk6o"]
+[ext_resource type="Texture2D" uid="uid://da2vwloqbe6g" path="res://icon.svg" id="11_qn8s6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w2043"]
+radius = 63.03174
+
+[node name="Enemy_shooter" type="RigidBody2D" node_paths=PackedStringArray("move_state", "health_component", "state_machine") groups=["enemy", "enemy_runner"]]
+collision_layer = 4
+collision_mask = 260
+lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 1
+linear_damp = 3.0
+script = ExtResource("1_b3xtc")
+move_state = NodePath("StateMachine/move to position")
+health_component = NodePath("HealthComponent")
+state_machine = NodePath("StateMachine")
+metadata/_custom_type_script = "uid://lp0wln500jpy"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["player"]]
+shape = ExtResource("2_35mkr")
+debug_color = Color(0.71359396, 0.4855485, 5.7756904e-07, 1)
+
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("shape_to_flash")]
+script = ExtResource("3_4kvfp")
+max_health = 1
+shape_to_flash = NodePath("../CollisionShape2D")
+metadata/_custom_type_script = "uid://d3farf02gkq8e"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "actor")]
+script = ExtResource("4_rp1hp")
+initial_state = NodePath("move to position")
+actor = NodePath("..")
+metadata/_custom_type_script = "uid://b3u4aiy6bgk1c"
+
+[node name="move to position" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_idle")]
+script = ExtResource("5_e1uhq")
+idle_on_target_reached = true
+acceleration = 600.0
+state_idle = NodePath("../Idle")
+metadata/_custom_type_script = "uid://55kpmp4krpql"
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state", "state_idle")]
+script = ExtResource("6_b3xtc")
+move_state = NodePath("../move to position")
+state_idle = NodePath(".")
+metadata/_custom_type_script = "uid://dkheav4fupoy2"
+
+[node name="Personal Space" type="Area2D" parent="."]
+visible = false
+collision_mask = 4
+script = ExtResource("7_rrekk")
+valid_groups = Dictionary[String, int]({
+"enemy": 0,
+"enemy_flanker": 0,
+"enemy_runner": 0,
+"enemy_shield": 2,
+"enemy_shooter": 1,
+"player": 0
+})
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Personal Space"]
+shape = SubResource("CircleShape2D_w2043")
+debug_color = Color(0.92681, 0.9257303, 1, 0.08235294)
+
+[node name="Label" type="Label" parent="." node_paths=PackedStringArray("target_node")]
+offset_left = -23.0
+offset_top = -34.0
+offset_right = 29.0
+offset_bottom = -11.0
+text = "HP"
+script = ExtResource("8_3q1cy")
+referenced_variable = "current_health"
+target_node = NodePath("../HealthComponent")
+
+[node name="GUN" type="Marker2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("9_5sv12")
+bullet = ExtResource("10_rdk6o")
+actor = NodePath("..")
+
+[node name="Timer" type="Timer" parent="GUN"]
+wait_time = 2.5
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="GUN"]
+position = Vector2(14, 0)
+scale = Vector2(0.2109375, 0.046874996)
+texture = ExtResource("11_qn8s6")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="GUN"]
+rect = Rect2(-60, -60, 120, 120)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="hit" from="." to="HealthComponent" method="_on_value_received"]
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
+[connection signal="health_empty" from="HealthComponent" to="." method="die"]
+[connection signal="body_entered" from="Personal Space" to="Personal Space" method="_on_body_entered"]
+[connection signal="body_exited" from="Personal Space" to="Personal Space" method="_on_body_exited"]
+[connection signal="timeout" from="GUN/Timer" to="GUN" method="_on_timer_timeout"]
+[connection signal="screen_entered" from="GUN/VisibleOnScreenEnabler2D" to="GUN" method="_on_visible_on_screen_enabler_2d_screen_entered"]
+[connection signal="screen_exited" from="GUN/VisibleOnScreenEnabler2D" to="GUN" method="_on_visible_on_screen_enabler_2d_screen_exited"]

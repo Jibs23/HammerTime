@@ -3,6 +3,9 @@ extends Node2D
 var game:Node
 var player: Character2D
 var spawn_timer: Timer
+@export var enemies_over_time: Curve = Curve.new()
+#@export var spawn_interval: Curve = Curve.new()
+@export var projectiles: Node2D
 
 func _on_tree_entered() -> void:
 	game = get_tree().get_root().get_node("Game")
@@ -20,19 +23,18 @@ var enemies: Dictionary = {
 	"Runner": preload("res://Scenes/enemies/Runner/enemy_runner.tscn"),
 	#"Flanker": preload("res://Scenes/enemies/Flanker/enemy_flanker.tscn"),
 	"Shield": preload("res://Scenes/enemies/Shield/enemy_shield.tscn"),
-	#"Shooter": preload("res://Scenes/enemies/Shooter/enemy_shooter.tscn"),
+	"Shooter": preload("res://Scenes/enemies/Shooter/enemy_shooter.tscn"),
 }
 
+@export var spawn_points_node: Node
 var spawn_points: Array[Marker2D]:
 	get:
 		var points: Array[Marker2D] = []
-		for child in get_children():
+		for child in spawn_points_node.get_children():
 			if child is Marker2D and child.is_in_group("enemy_spawn_point"):
 				points.append(child)
 		return points
 
-@export var max_enemies: int = 5
-@export var spawn_interval: float = 3.0
 var enemy_count: int:
 	get:
 		var count: int = 0
@@ -48,8 +50,11 @@ func add_enemy(enemy: PackedScene, spawn_position: Vector2) -> Enemy2D:
 	enemy_instance.name = enemy_instance.name + "_" + str(enemy_count)
 	return enemy_instance
 
+@export var timer: Timer
+
 func _on_timer_timeout() -> void:
-	if enemy_count >= max_enemies: return
+	print(enemies_over_time.sample(timer.time_left))
+	if enemy_count >= enemies_over_time.sample(timer.time_left): return
 	var enemy: PackedScene = enemies.values()[randi() % enemies.size()]
 	var spawn_point: Marker2D = spawn_points[randi() % spawn_points.size()]
 	var new_enemy = add_enemy(enemy, spawn_point.global_position)

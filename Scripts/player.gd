@@ -69,3 +69,11 @@ func _on_tree_entered() -> void:
 	var game:Node = get_tree().get_root().get_node("Game")
 	game.player = self
 
+@onready var camera: Camera2D = $Camera2D
+
+func die() -> void:
+	get_tree().reload_current_scene()
+	camera.reparent(get_parent())
+	super()
+	print("Player has died. Reloading scene.")
+	

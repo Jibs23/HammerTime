@@ -54,12 +54,14 @@ metadata/_custom_type_script = "uid://d3farf02gkq8e"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "actor")]
 script = ExtResource("4_ixho8")
+show_debug = false
 initial_state = NodePath("Idle")
 actor = NodePath("..")
 metadata/_custom_type_script = "uid://b3u4aiy6bgk1c"
 
 [node name="Pursuit" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_idle")]
 script = ExtResource("5_s4o70")
+target_player = true
 state_idle = NodePath("../Idle")
 metadata/_custom_type_script = "uid://55kpmp4krpql"
 

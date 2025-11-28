@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://d35vcl273s34i"]
+[gd_scene load_steps=9 format=3 uid="uid://d35vcl273s34i"]
 
 [ext_resource type="Script" uid="uid://d10y1mhqwveps" path="res://Scripts/game.gd" id="1_3dryh"]
 [ext_resource type="PackedScene" uid="uid://dg382sc10qhfs" path="res://Scenes/player.tscn" id="1_qxrlw"]
+[ext_resource type="Script" uid="uid://co51bp47p6ohl" path="res://Scripts/camera_2d.gd" id="3_i6g32"]
 [ext_resource type="Script" uid="uid://biskcokq6irx" path="res://Scripts/enemy_manager.gd" id="3_wowpa"]
 [ext_resource type="Script" uid="uid://csrxxds2tne84" path="res://Scripts/debug_label.gd" id="4_3dryh"]
+[ext_resource type="Script" uid="uid://d3tmu54670e6c" path="res://Scripts/time_limit.gd" id="6_1l0tm"]
+[ext_resource type="Texture2D" uid="uid://cc761bxrokhvk" path="res://Assets/kenney_prototypeTextures/Vector/texture_09.svg" id="6_i6g32"]
+
+[sub_resource type="Curve" id="Curve_i6g32"]
+_limits = [0.0, 30.0, 0.0, 20.0]
+_data = [Vector2(0, 30), 0.0, 0.5002589, 0, 0, Vector2(20, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Game" type="Node"]
 script = ExtResource("1_3dryh")
@@ -12,33 +20,41 @@ script = ExtResource("1_3dryh")
 
 [node name="Player" parent="Level" instance=ExtResource("1_qxrlw")]
 
-[node name="Enemy Manager" type="Node2D" parent="Level"]
+[node name="Camera2D" type="Camera2D" parent="Level/Player"]
+process_callback = 0
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.3
+drag_top_margin = 0.3
+drag_right_margin = 0.3
+drag_bottom_margin = 0.3
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("3_i6g32")
+
+[node name="Projectiles" type="Node2D" parent="Level"]
+
+[node name="Enemy Manager" type="Node2D" parent="Level" node_paths=PackedStringArray("projectiles", "spawn_points_node", "timer")]
 script = ExtResource("3_wowpa")
+enemies_over_time = SubResource("Curve_i6g32")
+projectiles = NodePath("../Projectiles")
+spawn_points_node = NodePath("../UI/Control/Spawn Points")
+timer = NodePath("../UI/Control/Timer/Time Limit")
 
 [node name="SpawnTimer" type="Timer" parent="Level/Enemy Manager"]
-autostart = true
+wait_time = 0.3
+script = ExtResource("6_1l0tm")
+repeat = true
 
-[node name="Spawn_TL" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
-position = Vector2(-600, -360)
-gizmo_extents = 41.2
+[node name="UI" type="CanvasLayer" parent="Level"]
 
-[node name="Spawn_TR" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
-position = Vector2(600, -360)
-gizmo_extents = 41.2
+[node name="Control" type="PanelContainer" parent="Level/UI"]
+offset_right = 145.0
+offset_bottom = 42.0
 
-[node name="Spawn_DL" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
-position = Vector2(-600, 360)
-gizmo_extents = 41.2
-
-[node name="Spawn_DR" type="Marker2D" parent="Level/Enemy Manager" groups=["enemy_spawn_point"]]
-position = Vector2(600, 360)
-gizmo_extents = 41.2
-
-[node name="Timer" type="Label" parent="Level" node_paths=PackedStringArray("target_node")]
-offset_left = -59.0
-offset_top = -338.0
-offset_right = 86.0
-offset_bottom = -296.0
+[node name="Timer" type="Label" parent="Level/UI/Control" node_paths=PackedStringArray("target_node")]
+layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Time left"
 uppercase = true
@@ -47,11 +63,39 @@ referenced_variable = "time_left"
 target_node = NodePath("Time Limit")
 use_snapping = true
 
-[node name="Time Limit" type="Timer" parent="Level/Timer"]
+[node name="Time Limit" type="Timer" parent="Level/UI/Control/Timer"]
 wait_time = 20.0
-autostart = true
+script = ExtResource("6_1l0tm")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Spawn Points" type="Node2D" parent="Level/UI/Control"]
 
+[node name="Spawn_TL" type="Marker2D" parent="Level/UI/Control/Spawn Points" groups=["enemy_spawn_point"]]
+position = Vector2(-700, -450)
+gizmo_extents = 41.2
+
+[node name="Spawn_TR" type="Marker2D" parent="Level/UI/Control/Spawn Points" groups=["enemy_spawn_point"]]
+position = Vector2(700, -450)
+gizmo_extents = 41.2
+
+[node name="Spawn_DL" type="Marker2D" parent="Level/UI/Control/Spawn Points" groups=["enemy_spawn_point"]]
+position = Vector2(-700, 450)
+gizmo_extents = 41.2
+
+[node name="Spawn_DR" type="Marker2D" parent="Level/UI/Control/Spawn Points" groups=["enemy_spawn_point"]]
+position = Vector2(700, 450)
+gizmo_extents = 41.2
+
+[node name="Background" type="CanvasLayer" parent="Level"]
+layer = -1
+follow_viewport_enabled = true
+
+[node name="Sprite2D" type="Polygon2D" parent="Level/Background"]
+texture_repeat = 2
+position = Vector2(-338, 155)
+texture = ExtResource("6_i6g32")
+texture_scale = Vector2(4, 4)
+polygon = PackedVector2Array(-7747, -6543, 8209, -6172, 8697, 7369, -7468, 7299)
+
+[connection signal="tree_exiting" from="Level/Player/Camera2D" to="Level/Player/Camera2D" method="_on_tree_exiting"]
 [connection signal="tree_entered" from="Level/Enemy Manager" to="Level/Enemy Manager" method="_on_tree_entered"]
 [connection signal="timeout" from="Level/Enemy Manager/SpawnTimer" to="Level/Enemy Manager" method="_on_timer_timeout"]
