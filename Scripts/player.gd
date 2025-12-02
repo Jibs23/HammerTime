@@ -19,6 +19,7 @@ func die():
 	super()
 
 func _ready() -> void:
+	super()
 	if debug_invincible:
 		health_component.max_health = 9999
 		health_component.current_health = 9999

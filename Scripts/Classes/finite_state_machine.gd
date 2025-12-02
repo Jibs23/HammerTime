@@ -6,7 +6,6 @@ class_name StateMachine extends Node
 @export var initial_state: State
 
 @export var actor: Character2D
-
 signal state_entered(new_state: State)
 signal state_exited(old_state: State)
 

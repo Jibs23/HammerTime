@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bi2l6kumq5iss"]
+
+[node name="Screencheck" type="VisibleOnScreenNotifier2D"]
+visible = false
+rect = Rect2(-22, -22, 44, 44)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-22, -21, 22, -22, 23, 22, -22, 22)

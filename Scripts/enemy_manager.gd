@@ -104,6 +104,7 @@ func _on_enemy_dead(enemy: Enemy2D) -> void:
 		if enemy.is_in_group(resource_enemy.enemy_group):
 			resource_enemy.enemy_count -= 1
 			Logic.add_score(resource_enemy.score_value, enemy.global_position)
+			enemy_death_effect(enemy, enemy.hit_angle)
 			break
 
 func _spawn_indicator_at_position(pos: Vector2) -> Node2D:
@@ -116,3 +117,12 @@ func _spawn_indicator_at_position(pos: Vector2) -> Node2D:
 func toggle_enemy_spawn(enable: bool) -> void:
 	timer.set_paused(not enable)
 	spawn_timer.set_paused(not enable)
+
+func enemy_death_effect(enemy:Enemy2D, hit_angle:float) -> void:
+	var death_effect:CPUParticles2D = enemy.death_effect_scene.instantiate()
+	var color: Color = enemy.death_effect_color
+	death_effect.global_position = enemy.global_position
+	death_effect.actor_color = color
+	death_effect.set_rotation(hit_angle) #radians
+	print("Death effect rotation (radians): ", hit_angle, " | degrees: ", rad_to_deg(hit_angle))
+	add_child(death_effect)

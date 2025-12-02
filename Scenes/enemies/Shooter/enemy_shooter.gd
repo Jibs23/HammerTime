@@ -6,6 +6,7 @@ signal shoot(target_pos: Vector2)
 @export var distance_from_target: float = 300.0
 
 func _ready() -> void:
+	super()
 	move_state.target_pos = pick_camping_position()
 
 func pick_camping_position() -> Vector2:
@@ -19,7 +20,6 @@ func pick_camping_position() -> Vector2:
 	location.x = clamp(location.x, 0, Con.SCREEN_X)
 	location.y = clamp(location.y, 0, Con.SCREEN_Y)
 	
-	print("Picked camping position at %s" % str(location))
 	return location
 
 

@@ -3,8 +3,7 @@
 [ext_resource type="Script" uid="uid://b8g6oqjuylesa" path="res://Scenes/enemies/Shooter/bullet.gd" id="1_plv82"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pbrh"]
-radius = 9.0
-height = 34.0
+height = 32.0
 
 [node name="Bullet" type="Area2D"]
 z_index = 1
@@ -16,20 +15,17 @@ deflected_color = Color(0.47058824, 0.9411765, 0.9411765, 0.9372549)
 metadata/_custom_type_script = "uid://b8g6oqjuylesa"
 
 [node name="bullet_body" type="Polygon2D" parent="."]
-rotation = 3.1415925
 color = Color(0.705, 0.94, 0.47, 0.9372549)
-polygon = PackedVector2Array(-16, -9, -3, -9, 35, 0, -3, 9, -16, 9, -24, 0)
+polygon = PackedVector2Array(-13, 8, 0, -32, 13, 8, 0, 21)
 
 [node name="Polygon2D2" type="Polygon2D" parent="."]
 position = Vector2(6, 6)
-rotation = -3.1415925
 color = Color(1, 0.90999997, 0.952, 0.85882354)
-polygon = PackedVector2Array(-9, 12, -15, 6, -9, 0, 5, 6)
+polygon = PackedVector2Array(2, 2, -6, 10, -14, 2, -6, -14)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2(6, 0)
-rotation = 1.5707964
+position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_6pbrh")
 
 [node name="Timer" type="Timer" parent="."]

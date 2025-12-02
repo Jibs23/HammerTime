@@ -21,6 +21,7 @@ linear_damp = 3.0
 script = ExtResource("1_quxat")
 health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
+death_effect_color = Color(0.7882353, 0.28235295, 0.38431373, 1)
 metadata/_custom_type_script = "uid://lp0wln500jpy"
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
@@ -84,7 +85,6 @@ script = ExtResource("8_w2043")
 referenced_variable = "current_health"
 target_node = NodePath("../HealthComponent")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="hit" from="." to="HealthComponent" method="_on_value_received"]
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
 [connection signal="health_empty" from="HealthComponent" to="." method="die"]

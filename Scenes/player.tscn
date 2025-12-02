@@ -41,6 +41,7 @@ script = ExtResource("1_f1ek2")
 debug_invincible = true
 health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
+death_effect_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
 metadata/_custom_type_script = "uid://b3rwp6d7gjlcf"
 
 [node name="Weapon" type="RigidBody2D" parent="." groups=["projectile_deflect", "weapon"]]

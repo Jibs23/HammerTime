@@ -19,7 +19,6 @@ class_name HealthComponent extends Component
 			health_empty.emit()
 		if new_health != current_health:
 			health_changed.emit(current_health)
-		print("Health set to ", new_health)
 		current_health = new_health
 
 

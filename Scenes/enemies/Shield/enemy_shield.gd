@@ -9,4 +9,5 @@ func pick_shield_orientation() -> void:
 
 
 func _ready() -> void:
+	super()
 	pick_shield_orientation()

@@ -22,7 +22,7 @@ func _on_body_entered(body: Node) -> void:
 				_deflect()
 				return
 			if body.has_signal("hit"):
-				body.emit_signal("hit", damage, self)
+				body.hit.emit(damage, self)
 			_die()
 			return
 

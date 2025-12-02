@@ -51,23 +51,19 @@ func _enter_tree() -> void:
 	player.weapon = self
 	player.connect("action_1", Callable(self,"wpn_action_1"))
 	player.connect("action_2", Callable(self,"wpn_action_2"))
-	print(self.name," set as player weapon.")
 
 func calc_dammage() -> int:
 	var output: int = 0
 	if swing_power < min_dmg_speed:
 		output = 0
-		print("too slow: no damage dealt.")
 	elif swing_power >= max_dmg_speed:
 		output = int(dmg_threshold.sample(1.0) * weapon_dmg)
-		print("Max damage dealt!!")
+		print("CRITICAL HIT!")
 	else:
 		var dmg_mult: float = swing_power / max_dmg_speed # get percentage of max_dmg_speed
 		var dmg_sample: float = dmg_threshold.sample(dmg_mult) # sample curve at that percentage
 		output = int(roundf(dmg_sample) * weapon_dmg) # scale by weapon damage
-		print("Damage scaled with speed.")
 
-	print("last_angular_velocity: ", last_angular_velocity," + player linear velocity: ", player.linear_velocity.length()," = swing_power: ", swing_power)
 	return output
 
 func _on_body_entered(body: Node2D) -> void:
@@ -76,8 +72,10 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	var calc_dmg: int = calc_dammage()
 	if calc_dmg <= 0: return
+	if body.hit_angle != null:
+		body.hit_angle = float(get_rotation())
 	if body.has_signal("hit"):
-		body.emit_signal("hit", calc_dmg, self)
+		body.hit.emit(calc_dmg, self)
 	else:
 		print(body.name, " has no 'hit' signal to deal damage to.")
 
@@ -88,7 +86,6 @@ func _bounce_off(lost_speed: float, force:float) -> void:
 	set_angular_velocity(0)
 	apply_torque_impulse(-rad_to_deg(last_angular_velocity) * force * lost_speed)
 	bounce_timer = _start_bounce_timer(0.2)
-	print("Bounced off with new angular velocity: ", last_angular_velocity)
 	
 func _start_bounce_timer(time: float) -> Timer:
 	var timer = Timer.new()
