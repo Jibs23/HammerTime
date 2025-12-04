@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dgoy23tjkumpe"]
+[gd_scene load_steps=10 format=3 uid="uid://dgoy23tjkumpe"]
 
 [ext_resource type="Script" uid="uid://lp0wln500jpy" path="res://Scripts/Classes/enemy.gd" id="1_quxat"]
+[ext_resource type="AudioStream" uid="uid://wnir1qepssdh" path="res://sound/GameSFX/Impact/Retro Impact Punch Hurt 01.wav" id="2_w2043"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_tm0ch"]
 [ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="4_ulvqc"]
 [ext_resource type="Script" uid="uid://bw6hejvpvmqbb" path="res://Scripts/states/pursuit.gd" id="5_5d1s0"]
@@ -21,6 +22,7 @@ linear_damp = 3.0
 script = ExtResource("1_quxat")
 health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
+death_sound = ExtResource("2_w2043")
 death_effect_color = Color(0.7882353, 0.28235295, 0.38431373, 1)
 metadata/_custom_type_script = "uid://lp0wln500jpy"
 

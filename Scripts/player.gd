@@ -26,6 +26,7 @@ func _ready() -> void:
 
 func dash() -> void:
 	if dash_cooldown_timer: return
+	Audio.play_sound(Audio.sfx["dash"],self)
 	var dir:Vector2 = get_ui_direction()
 	apply_central_impulse(dir * dash_power)
 	dash_cooldown_timer = _start_dash_cooldown(dash_cooldown_duration)

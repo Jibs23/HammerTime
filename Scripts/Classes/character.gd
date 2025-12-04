@@ -5,7 +5,7 @@ var death_effect_scene: PackedScene = preload("res://Scenes/effects/effect_splas
 @export var death_effect_scale: float = 1.0
 @export var health_component: HealthComponent 
 @export var state_machine: StateMachine
-var death_sound
+@export var death_sound: AudioStream
 var screen_check: VisibleOnScreenNotifier2D
 ## The last emitted direction, to account for Vector2.ZERO deadzone.
 var last_dir: Vector2 = Vector2.ZERO
@@ -27,6 +27,7 @@ var hit_angle: float = 0.0
 @export var death_effect_color: Color
 func die() -> void:
 	character_died.emit(self)
+	Audio.play_sound(death_sound,self)
 	queue_free()
 
 ## Signals the direction input, and accounts for Vector2.ZERO deadzone.

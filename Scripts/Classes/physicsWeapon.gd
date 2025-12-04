@@ -75,6 +75,7 @@ func calc_dammage() -> int:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("solid"):
 		_bounce_off(0.8, 10)
+		Audio.play_sound(Audio.sfx["clang"], self)
 		return
 	var calc_dmg: int = calc_dammage()
 	if calc_dmg <= 0: return

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dnbra7vw2fkml"
+path="res://.godot/imported/Retro Descending Long 04.wav-1cdf1c9562eca30fe5c496fc0d1e2db2.sample"
+
+[deps]
+
+source_file="res://sound/GameSFX/Descending/Retro Descending Long 04.wav"
+dest_files=["res://.godot/imported/Retro Descending Long 04.wav-1cdf1c9562eca30fe5c496fc0d1e2db2.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

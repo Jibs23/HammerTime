@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://cuk2crwvpedu"]
+[gd_scene load_steps=12 format=3 uid="uid://cuk2crwvpedu"]
 
 [ext_resource type="Script" uid="uid://dhjukqb0ph4qw" path="res://Scenes/enemies/Shield/enemy_shield.gd" id="1_wgm1h"]
+[ext_resource type="AudioStream" uid="uid://d320jae5xt852" path="res://sound/GameSFX/Impact/Retro Impact 20.wav" id="2_pvw13"]
 [ext_resource type="Script" uid="uid://gj0p8riiisk1" path="res://Scenes/enemies/Shield/shield.gd" id="2_tu8kc"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_hffj4"]
 [ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="4_ixho8"]
@@ -28,6 +29,7 @@ script = ExtResource("1_wgm1h")
 death_effect_scale = 2.0
 health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
+death_sound = ExtResource("2_pvw13")
 death_effect_color = Color(0.80784315, 0.61960787, 0.3372549, 1)
 metadata/_custom_type_script = "uid://lp0wln500jpy"
 

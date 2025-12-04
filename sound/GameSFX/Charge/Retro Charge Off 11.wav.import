@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bh7e0eb4phu5t"
+path="res://.godot/imported/Retro Charge Off 11.wav-bd4437dc2a2efd4e6f604bca151f3a6a.sample"
+
+[deps]
+
+source_file="res://sound/GameSFX/Charge/Retro Charge Off 11.wav"
+dest_files=["res://.godot/imported/Retro Charge Off 11.wav-bd4437dc2a2efd4e6f604bca151f3a6a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

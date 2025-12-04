@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://dg382sc10qhfs"]
+[gd_scene load_steps=18 format=3 uid="uid://dg382sc10qhfs"]
 
 [ext_resource type="Script" uid="uid://dsc3muhjtycr" path="res://Scripts/player.gd" id="1_f1ek2"]
+[ext_resource type="AudioStream" uid="uid://cmtiqoopq3yds" path="res://sound/sfx_player_death.ogg" id="2_pu2lt"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_gymyn"]
 [ext_resource type="Script" uid="uid://bekqwb46nqc28" path="res://Scenes/effects/trail/weapon_trail.gd" id="3_pu2lt"]
 [ext_resource type="PackedScene" uid="uid://cclp2idnd7odb" path="res://Scenes/effects/trail/trail.tscn" id="3_tx1dd"]
@@ -47,6 +48,7 @@ debug_invincible = true
 sprite = NodePath("Sprite2D")
 health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
+death_sound = ExtResource("2_pu2lt")
 death_effect_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
 metadata/_custom_type_script = "uid://b3rwp6d7gjlcf"
 

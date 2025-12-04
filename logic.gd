@@ -39,6 +39,7 @@ func start_game() -> void:
 	reset_score()
 	enemy_manager.toggle_enemy_spawn(true)
 	game_state_changed.emit(game_state)
+	Audio.play_music(Audio.music["song1"])
 
 func game_over() -> void:
 	game_state = GameState.GAMEOVER

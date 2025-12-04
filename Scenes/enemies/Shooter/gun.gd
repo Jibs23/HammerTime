@@ -10,6 +10,7 @@ func _physics_process(_delta: float) -> void:
 		look_at(player_pos)
 
 func shoot() -> void:
+	Audio.play_sound(Audio.sfx["shoot"],self)
 	var bullet_instance = bullet.instantiate()
 	actor.manager.projectiles.add_child(bullet_instance)
 	bullet_instance.global_position = global_position

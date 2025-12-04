@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Logic="*res://logic.gd"
+Audio="*res://audio.gd"
 
 [debug]
 

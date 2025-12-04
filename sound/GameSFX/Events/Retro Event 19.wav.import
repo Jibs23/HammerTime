@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://hr1w454musr7"
+path="res://.godot/imported/Retro Event 19.wav-56bb0b0ca2e89cfb4d4a83876fd3840b.sample"
+
+[deps]
+
+source_file="res://sound/GameSFX/Events/Retro Event 19.wav"
+dest_files=["res://.godot/imported/Retro Event 19.wav-56bb0b0ca2e89cfb4d4a83876fd3840b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

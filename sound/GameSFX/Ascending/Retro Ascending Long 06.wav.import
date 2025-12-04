@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cu6i3bb2ojjw3"
+path="res://.godot/imported/Retro Ascending Long 06.wav-4bc1e8026ca4d93eb047cf8f0c3f75c6.sample"
+
+[deps]
+
+source_file="res://sound/GameSFX/Ascending/Retro Ascending Long 06.wav"
+dest_files=["res://.godot/imported/Retro Ascending Long 06.wav-4bc1e8026ca4d93eb047cf8f0c3f75c6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

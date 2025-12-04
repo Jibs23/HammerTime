@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://fona5bn6vul7"
+path="res://.godot/imported/Retro Jump StereoUP Simple 01.wav-4bd8e20e33e9d5857356dc3d506e65cb.sample"
+
+[deps]
+
+source_file="res://sound/GameSFX/Bounce Jump/Retro Jump StereoUP Simple 01.wav"
+dest_files=["res://.godot/imported/Retro Jump StereoUP Simple 01.wav-4bd8e20e33e9d5857356dc3d506e65cb.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -45,6 +45,7 @@ func _on_timer_timeout() -> void:
 @export var particles: CPUParticles2D
 
 func _deflect() -> void:
+	Audio.play_sound(Audio.sfx["deflect"],self)
 	collision_whitelist.append("enemy")
 	direction = -direction
 	rotation += PI
