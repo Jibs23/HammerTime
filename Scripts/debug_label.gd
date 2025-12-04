@@ -32,7 +32,11 @@ func _process(_delta: float) -> void:
 				variable = snapped(variable, pow(10, -decimals))
 			if period_separator and typeof(variable) == TYPE_INT:
 				pass #! NOT IMPLEMENTED
-			text = str(label_text," ", str(variable))
+			if text != "":
+				text = str(label_text," ", str(variable))
+			else:
+				text = str(variable)
+
 		else:
 			text = "Variable not found"
 	else:

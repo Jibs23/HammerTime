@@ -63,7 +63,7 @@ func toggle_ui(ui:UI, on:bool) -> void:
 signal new_top_high_score
 func _on_new_high_score(new_score: int, index: int, label: Label) -> void:
 	if new_score == 0: return
-	new_top_high_score.emit()
+	if index == 1: new_top_high_score.emit()
 	flash_label(label,5,0.2,Color.YELLOW)
 
 func flash_label(label:Label,count:int,speed:float,color:Color) -> void:
