@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://d35vcl273s34i"]
+[gd_scene load_steps=25 format=3 uid="uid://d35vcl273s34i"]
 
 [ext_resource type="Script" uid="uid://d10y1mhqwveps" path="res://Scripts/game.gd" id="1_3dryh"]
 [ext_resource type="PackedScene" uid="uid://dg382sc10qhfs" path="res://Scenes/player.tscn" id="1_qxrlw"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://crp0yf3tbjxlk" path="res://Scripts/new_best.gd" id="11_rfjv2"]
 [ext_resource type="FontFile" uid="uid://bagmk88ddq715" path="res://Fonts/04b_30/04B_30__.TTF" id="11_rku1e"]
 [ext_resource type="Texture2D" uid="uid://jj6pravopms8" path="res://Assets/SimpleFlatKeys/Light/W-Key.png" id="13_85qyi"]
+[ext_resource type="Texture2D" uid="uid://dd8in3na86sce" path="res://Assets/SimpleFlatKeys/Light/R-Key.png" id="13_iivbl"]
 [ext_resource type="Texture2D" uid="uid://dvm3gtpxes42j" path="res://Assets/SimpleFlatKeys/Light/A-Key.png" id="14_iivbl"]
 [ext_resource type="Texture2D" uid="uid://583bov06w1m1" path="res://Assets/SimpleFlatKeys/Light/S-Key.png" id="15_7nbq1"]
 [ext_resource type="Texture2D" uid="uid://bls1nigit7o8r" path="res://Assets/SimpleFlatKeys/Light/D-Key.png" id="16_exi56"]
@@ -158,6 +159,39 @@ theme_override_font_sizes/font_size = 16
 text = "NEW BEST!"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PanelContainer2" type="Control" parent="Level/UI/GameOver"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -108.0
+offset_top = -216.0
+offset_right = 108.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="R" type="TextureRect" parent="Level/UI/GameOver/PanelContainer2"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = -9.0
+offset_right = 173.0
+offset_bottom = 120.0
+texture = ExtResource("13_iivbl")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Level/UI/GameOver/PanelContainer2"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 127.0
+offset_right = 196.0
+offset_bottom = 159.0
+theme = ExtResource("10_o5yvi")
+text = "RESTART"
+horizontal_alignment = 1
 
 [node name="GameUi" type="CanvasLayer" parent="Level/UI"]
 visible = false
@@ -407,6 +441,7 @@ position = Vector2(23.799988, -453)
 shape = SubResource("RectangleShape2D_1l0tm")
 debug_color = Color(0.9195, 1, 0.79, 1)
 
+[connection signal="character_died" from="Level/Player" to="Level/Enemy Manager" method="enemy_death_effect"]
 [connection signal="tree_entered" from="Level/Enemy Manager" to="Level/Enemy Manager" method="_on_tree_entered"]
 [connection signal="timeout" from="Level/Enemy Manager/SpawnTimer" to="Level/Enemy Manager" method="_on_timer_timeout"]
 [connection signal="new_top_high_score" from="Level/UI" to="Level/UI/GameOver/NewBest" method="_on_ui_new_top_high_score"]

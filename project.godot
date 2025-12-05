@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="20secBulletHell"
+config/name="HammerTime"
 config/tags=PackedStringArray("jam")
 run/main_scene="uid://d35vcl273s34i"
 config/features=PackedStringArray("4.5", "GL Compatibility")

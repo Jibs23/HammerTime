@@ -10,12 +10,17 @@ var dash_cooldown_timer: Timer
 @export var dash_cooldown_duration: float = 2
 @export var sprite: Sprite2D
 signal wpn_rotate(dir:bool)
-signal player_dead
+signal player_dead()
 signal player_active
 
 func die():
 	print("Player has died.")
+	character_died.emit(self, hit_angle)
 	player_dead.emit()
+	if Logic.game_state == Logic.GameState.PLAYING:
+		Logic.set_game_state(Logic.GameState.GAMEOVER)
+		return
+	Audio.stop_music()
 	super()
 
 func _ready() -> void:
@@ -111,7 +116,3 @@ func _start_dash_cooldown(time:float) -> Timer:
 func _init() -> void:
 	Logic.connect("game_state_changed", Callable(self, "_on_game_state_changed"))
 
-func _on_game_state_changed(new_state: Logic.GameState) -> void:
-	match new_state:
-		Logic.GameState.GAMEOVER:
-			die()

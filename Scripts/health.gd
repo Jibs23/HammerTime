@@ -52,10 +52,12 @@ func _on_value_received(damage:int, from:Node) -> void:
 	flash_shape(shape_to_flash)
 	hurt(damage)
 	
-@export var shape_to_flash: CollisionShape2D
-func flash_shape(shape:CollisionShape2D):
-	if not shape: return
-	var original_modulate:Color = shape.modulate
-	shape.modulate = Color(1, 0, 0)
+@export var shape_to_flash: Node2D
+func flash_shape(shape:Node2D):
+	if not shape.material: 
+		push_warning("No material found on shape to flash.", self)
+		return
+	shape.material.set("shader_param/intensity", 1)
+	shape.material.set("shader_param/white_to_black", 1)
 	await get_tree().create_timer(0.1).timeout
-	shape.modulate = original_modulate
+	shape.material.set("shader_param/intensity", 0)

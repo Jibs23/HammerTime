@@ -1,13 +1,19 @@
-[gd_scene load_steps=10 format=3 uid="uid://dgoy23tjkumpe"]
+[gd_scene load_steps=12 format=3 uid="uid://dgoy23tjkumpe"]
 
 [ext_resource type="Script" uid="uid://lp0wln500jpy" path="res://Scripts/Classes/enemy.gd" id="1_quxat"]
 [ext_resource type="AudioStream" uid="uid://wnir1qepssdh" path="res://sound/GameSFX/Impact/Retro Impact Punch Hurt 01.wav" id="2_w2043"]
+[ext_resource type="Shader" uid="uid://sonsxbvlf47x" path="res://shaders/flash.gdshader" id="3_3ufgd"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_tm0ch"]
 [ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="4_ulvqc"]
 [ext_resource type="Script" uid="uid://bw6hejvpvmqbb" path="res://Scripts/states/pursuit.gd" id="5_5d1s0"]
 [ext_resource type="Script" uid="uid://cuhbohka8opeu" path="res://Scripts/states/enemy_idle.gd" id="6_5d1s0"]
 [ext_resource type="Script" uid="uid://sgyeob3hmfxb" path="res://Scripts/personal_space.gd" id="7_vskj4"]
 [ext_resource type="Script" uid="uid://csrxxds2tne84" path="res://Scripts/debug_label.gd" id="8_w2043"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g0stv"]
+shader = ExtResource("3_3ufgd")
+shader_parameter/white_to_black = 1.0
+shader_parameter/intensity = 0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w2043"]
 radius = 14.035668
@@ -32,15 +38,17 @@ scale = Vector2(1.0625, 1.0625)
 polygon = PackedVector2Array(0, -15.058824, -15.058824, 0, 0, 15.058824, 15.058824, 0)
 
 [node name="CollisionShape2D2" type="Polygon2D" parent="."]
+material = SubResource("ShaderMaterial_g0stv")
 color = Color(0.79, 0.28440002, 0.3855202, 1)
 antialiased = true
 polygon = PackedVector2Array(0, -16, -5, -11, -13, -12, -12, -4, -16, 0, -12, 5, -13, 12, -5, 11, 0, 16, 5, 11, 13, 12, 12, 5, 16, 0, 12, -4, 13, -12, 5, -11)
 
 [node name="CollisionShape2D" type="Polygon2D" parent="CollisionShape2D2"]
 
-[node name="HealthComponent" type="Node" parent="."]
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("shape_to_flash")]
 script = ExtResource("3_tm0ch")
 max_health = 1
+shape_to_flash = NodePath("..")
 metadata/_custom_type_script = "uid://d3farf02gkq8e"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "actor")]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://7r7nsiw5c1sh"]
+[gd_scene load_steps=16 format=3 uid="uid://7r7nsiw5c1sh"]
 
 [ext_resource type="Script" uid="uid://dodb1uf4web4t" path="res://Scenes/enemies/Shooter/enemy_shooter.gd" id="1_b3xtc"]
 [ext_resource type="AudioStream" uid="uid://bs60s0dj2ykbb" path="res://sound/GameSFX/Impact/Retro Impact Punch 07.wav" id="2_rdk6o"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_4kvfp"]
+[ext_resource type="Shader" uid="uid://sonsxbvlf47x" path="res://shaders/flash.gdshader" id="3_qn8s6"]
 [ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="4_rp1hp"]
 [ext_resource type="Script" uid="uid://bw6hejvpvmqbb" path="res://Scripts/states/pursuit.gd" id="5_e1uhq"]
 [ext_resource type="Script" uid="uid://cbk4fxvsilclq" path="res://Scenes/enemies/Shooter/idle.gd" id="6_b3xtc"]
@@ -13,6 +14,11 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rdk6o"]
 radius = 21.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8oa4k"]
+shader = ExtResource("3_qn8s6")
+shader_parameter/white_to_black = 1.0
+shader_parameter/intensity = 0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5sv12"]
 blend_mode = 2
@@ -41,6 +47,7 @@ visible = false
 shape = SubResource("CircleShape2D_rdk6o")
 
 [node name="Polygon2D3" type="Polygon2D" parent="."]
+material = SubResource("ShaderMaterial_8oa4k")
 scale = Vector2(1.4545455, 1.4545455)
 color = Color(1.2032687e-07, 0.37476206, 0.26373118, 1)
 polygon = PackedVector2Array(-6.875, -12.375, -11.6875, -7.5625, -14.4375, 0, -4.125, 1.375, 4.125, 1.375, 14.4375, 0, 12.375, -6.875, 6.1875, -12.375, 0, -14.4375)
@@ -57,7 +64,7 @@ polygon = PackedVector2Array(-13.0625, 0, -7.5625, 0.6875, 0, 1.375, 6.875, 0.68
 [node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("shape_to_flash")]
 script = ExtResource("3_4kvfp")
 max_health = 1
-shape_to_flash = NodePath("../CollisionShape2D")
+shape_to_flash = NodePath("..")
 metadata/_custom_type_script = "uid://d3farf02gkq8e"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "actor") groups=["enemy_shooter"]]

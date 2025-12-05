@@ -36,7 +36,7 @@ var total_enemy_count: int:
 		return count
 
 ## Adds an enemy to the scene at a given position. If position is Vector2.ZERO, spawns randomly between two spawn points.
-func add_enemy(enemy: ResourceEnemy, spawn_position: Vector2) -> Enemy2D:
+func add_enemy(enemy: ResourceEnemy, spawn_position: Vector2) -> Character2D:
 	var x: float
 	var y: float
 
@@ -99,12 +99,12 @@ func _on_timer_timeout() -> void:
 	var spawn_point: Marker2D = spawn_points[randi() % spawn_points.size()]
 	add_enemy(enemy, Vector2.ZERO)
 
-func _on_enemy_dead(enemy: Enemy2D) -> void:
+func _on_enemy_dead(enemy: Character2D, angle: float) -> void:
 	for resource_enemy in enemies:
 		if enemy.is_in_group(resource_enemy.enemy_group):
 			resource_enemy.enemy_count -= 1
 			Logic.add_score(resource_enemy.score_value, enemy.global_position)
-			enemy_death_effect(enemy, enemy.hit_angle)
+			enemy_death_effect(enemy, angle)
 			break
 
 func _spawn_indicator_at_position(pos: Vector2) -> Node2D:
@@ -118,7 +118,7 @@ func toggle_enemy_spawn(enable: bool) -> void:
 	timer.set_paused(not enable)
 	spawn_timer.set_paused(not enable)
 
-func enemy_death_effect(enemy:Enemy2D, hit_angle:float) -> void:
+func enemy_death_effect(enemy:Character2D, hit_angle:float) -> void:
 	var death_effect:CPUParticles2D = enemy.death_effect_scene.instantiate()
 	var color: Color = enemy.death_effect_color
 	death_effect.global_position = enemy.global_position

@@ -45,6 +45,7 @@ func game_over() -> void:
 	game_state = GameState.GAMEOVER
 	enemy_manager.toggle_enemy_spawn(false)
 	add_high_score(score)
+	if player: player.die()
 	game_state_changed.emit(game_state)
 
 func _on_player_wake() -> void:

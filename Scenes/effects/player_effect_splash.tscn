@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://dp0eg0dw3qbo2"]
+
+[ext_resource type="Script" uid="uid://ih1iv4vvdr2w" path="res://Scripts/effect_splash.gd" id="1_tdgvx"]
+
+[sub_resource type="Gradient" id="Gradient_f53kv"]
+offsets = PackedFloat32Array(0.8141264, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="EffectSplash" type="CPUParticles2D" node_paths=PackedStringArray("explosion")]
+z_index = -1
+z_as_relative = false
+emitting = false
+amount = 32
+one_shot = true
+explosiveness = 0.9
+randomness = 0.5
+emission_shape = 2
+emission_sphere_radius = 5.05
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 15.0
+initial_velocity_max = 208.86
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+damping_min = 100.0
+damping_max = 100.0
+scale_amount_min = 3.0
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_f53kv")
+script = ExtResource("1_tdgvx")
+explosion = NodePath("explosion")
+
+[node name="explosion" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+randomness = 0.97
+emission_shape = 2
+emission_sphere_radius = 5.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 69.62
+radial_accel_min = 17.71
+radial_accel_max = 41.77
+damping_min = 87.975
+damping_max = 100.0
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 5.0
+scale_amount_max = 10.0
+color_ramp = SubResource("Gradient_f53kv")
+
+[connection signal="finished" from="." to="." method="_on_finished"]
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]

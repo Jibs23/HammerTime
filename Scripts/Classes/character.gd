@@ -1,7 +1,7 @@
 @icon("res://Assets/Editor Icons/icon_character2d.png")
 ## Used for 2D characters.
 class_name Character2D extends RigidBody2D
-var death_effect_scene: PackedScene = preload("res://Scenes/effects/effect_splash.tscn")
+@export var death_effect_scene: PackedScene = preload("res://Scenes/effects/effect_splash.tscn")
 @export var death_effect_scale: float = 1.0
 @export var health_component: HealthComponent 
 @export var state_machine: StateMachine
@@ -10,7 +10,7 @@ var screen_check: VisibleOnScreenNotifier2D
 ## The last emitted direction, to account for Vector2.ZERO deadzone.
 var last_dir: Vector2 = Vector2.ZERO
 
-signal character_died(character: Character2D)
+signal character_died(character: Character2D, hit_angle: float)
 signal input_dir(direction: Vector2)
 signal action_1(input: bool)
 signal action_2(input: bool)
@@ -26,7 +26,7 @@ var current_state: State:
 var hit_angle: float = 0.0
 @export var death_effect_color: Color
 func die() -> void:
-	character_died.emit(self)
+	character_died.emit(self, hit_angle)
 	Audio.play_sound(death_sound,self)
 	queue_free()
 

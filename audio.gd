@@ -11,7 +11,7 @@ extends Node
 	"clang": preload("res://sound/GameSFX/FootStep/Retro FootStep Metal 01.wav")
 }
 @export var music: Dictionary[String, AudioStream] = {
-	"song1": preload("res://sound/GameSFX/Music/Events/Retro Music - WolfSynth - Tempo Normal - 02.wav")
+	"song1": preload("res://sound/20second_rampage.ogg")
 }
 
 func play_sound(sound: AudioStream, source: Node=null, random_pitch:bool=true) -> void:
@@ -30,10 +30,19 @@ func play_sound(sound: AudioStream, source: Node=null, random_pitch:bool=true) -
 	print("Playing sound: ", sound)
 	audio_player.connect("finished", Callable(audio_player, "queue_free"))
 
+
+var current_music_player: AudioStreamPlayer = null
 func play_music(music_stream: AudioStream) -> AudioStreamPlayer:
 	var music_player = AudioStreamPlayer.new()
 	music_player.set_bus("Music")
 	add_child(music_player)
 	music_player.stream = music_stream
 	music_player.play()
+	current_music_player = music_player
 	return music_player
+
+func stop_music() -> void:
+	if current_music_player:
+		current_music_player.stop()
+		current_music_player.queue_free()
+		current_music_player = null

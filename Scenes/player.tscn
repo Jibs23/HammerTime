@@ -1,7 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://dg382sc10qhfs"]
+[gd_scene load_steps=21 format=3 uid="uid://dg382sc10qhfs"]
 
+[ext_resource type="Shader" uid="uid://sonsxbvlf47x" path="res://shaders/flash.gdshader" id="1_7dp3o"]
 [ext_resource type="Script" uid="uid://dsc3muhjtycr" path="res://Scripts/player.gd" id="1_f1ek2"]
 [ext_resource type="AudioStream" uid="uid://cmtiqoopq3yds" path="res://sound/sfx_player_death.ogg" id="2_pu2lt"]
+[ext_resource type="PackedScene" uid="uid://dp0eg0dw3qbo2" path="res://Scenes/effects/player_effect_splash.tscn" id="2_ukyrk"]
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_gymyn"]
 [ext_resource type="Script" uid="uid://bekqwb46nqc28" path="res://Scenes/effects/trail/weapon_trail.gd" id="3_pu2lt"]
 [ext_resource type="PackedScene" uid="uid://cclp2idnd7odb" path="res://Scenes/effects/trail/trail.tscn" id="3_tx1dd"]
@@ -28,6 +30,11 @@ point_count = 2
 metadata/_snap_enabled = true
 metadata/_snap_count = 100
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7dp3o"]
+shader = ExtResource("1_7dp3o")
+shader_parameter/white_to_black = 1.0
+shader_parameter/intensity = 0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_3smsa"]
 radius = 30.016663
 
@@ -44,8 +51,9 @@ contact_monitor = true
 max_contacts_reported = 1
 linear_damp = 2.0
 script = ExtResource("1_f1ek2")
-debug_invincible = true
 sprite = NodePath("Sprite2D")
+death_effect_scene = ExtResource("2_ukyrk")
+death_effect_scale = 2.0
 health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
 death_sound = ExtResource("2_pu2lt")
@@ -102,21 +110,25 @@ color = Color(0.35462016, 0.44963068, 0.6788865, 1)
 polygon = PackedVector2Array(-32, -12, -23, -12, -17, -7, -13, -7, -8, -9, 8, -9, 14, -7, 18, -7, 23, -12, 32, -12, 32, 20, 23, 20, 18, 16, 13, 16, 8, 17, -8, 17, -13, 16, -17, 16, -23, 20, -32, 20)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_7dp3o")
 position = Vector2(0, -5)
 scale = Vector2(0.08, 0.08)
 texture = ExtResource("5_gymyn")
 
 [node name="Polygon2D" type="Polygon2D" parent="Sprite2D"]
+use_parent_material = true
 scale = Vector2(9.999999, 9.999999)
 color = Color(0.2784314, 0.54901963, 0.7490196, 1)
 polygon = PackedVector2Array(-10, 6, -35, -11, 35, -11, 10, 6, 0, -6)
 
 [node name="Polygon2D2" type="Polygon2D" parent="Sprite2D"]
+use_parent_material = true
 scale = Vector2(9.999999, 9.999999)
 color = Color(1, 1, 1, 0.45490196)
 polygon = PackedVector2Array(-25, -15, -29, -12, -13, 0)
 
 [node name="Polygon2D3" type="Polygon2D" parent="Sprite2D"]
+use_parent_material = true
 scale = Vector2(9.999999, 9.999999)
 color = Color(1, 1, 1, 0.45490196)
 polygon = PackedVector2Array(25, -15, 29, -12, 13, 0)
@@ -128,7 +140,7 @@ shape = SubResource("CircleShape2D_3smsa")
 [node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("shape_to_flash")]
 script = ExtResource("3_gymyn")
 max_health = 5
-shape_to_flash = NodePath("../CollisionShape2D")
+shape_to_flash = NodePath("../Sprite2D")
 metadata/_custom_type_script = "uid://d3farf02gkq8e"
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "actor")]
