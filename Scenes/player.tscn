@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dg382sc10qhfs"]
+[gd_scene load_steps=22 format=3 uid="uid://dg382sc10qhfs"]
 
 [ext_resource type="Shader" uid="uid://sonsxbvlf47x" path="res://shaders/flash.gdshader" id="1_7dp3o"]
 [ext_resource type="Script" uid="uid://dsc3muhjtycr" path="res://Scripts/player.gd" id="1_f1ek2"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://d3farf02gkq8e" path="res://Scripts/health.gd" id="3_gymyn"]
 [ext_resource type="Script" uid="uid://bekqwb46nqc28" path="res://Scenes/effects/trail/weapon_trail.gd" id="3_pu2lt"]
 [ext_resource type="PackedScene" uid="uid://cclp2idnd7odb" path="res://Scenes/effects/trail/trail.tscn" id="3_tx1dd"]
+[ext_resource type="AudioStream" uid="uid://bs60s0dj2ykbb" path="res://sound/GameSFX/Impact/Retro Impact Punch 07.wav" id="4_h4iuc"]
 [ext_resource type="Script" uid="uid://cyjyqi8i32o3x" path="res://Scripts/states/player_idle.gd" id="5_3smsa"]
 [ext_resource type="Texture2D" uid="uid://dormgc2umajb2" path="res://icon_color.svg" id="5_gymyn"]
 [ext_resource type="Script" uid="uid://b3u4aiy6bgk1c" path="res://Scripts/Classes/finite_state_machine.gd" id="5_ukyrk"]
@@ -58,6 +59,7 @@ health_component = NodePath("HealthComponent")
 state_machine = NodePath("StateMachine")
 death_sound = ExtResource("2_pu2lt")
 death_effect_color = Color(0.2784314, 0.54901963, 0.7490196, 1)
+hurt_sound = ExtResource("4_h4iuc")
 metadata/_custom_type_script = "uid://b3rwp6d7gjlcf"
 
 [node name="Trail" parent="." node_paths=PackedStringArray("relative_parent") instance=ExtResource("3_tx1dd")]

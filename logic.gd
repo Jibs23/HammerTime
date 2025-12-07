@@ -5,6 +5,7 @@ var player: Character2D
 var enemy_manager: Node2D
 var ui: Node
 var audio_manager: Node
+var time_limit_timer: Timer
 
 # GAME STATE MANAGEMENT
 enum GameState {
@@ -43,6 +44,8 @@ func start_game() -> void:
 	Audio.play_music(Audio.music["song1"])
 
 func game_over() -> void:
+	if time_limit_timer.time_left > 1:
+		Audio.stop_music()
 	game_state = GameState.GAMEOVER
 	enemy_manager.toggle_enemy_spawn(false)
 	add_high_score(score)

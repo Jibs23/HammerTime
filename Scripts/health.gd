@@ -55,7 +55,6 @@ func _on_value_received(damage:int, from:Node) -> void:
 @export var shape_to_flash: Node2D
 func flash_shape(shape:Node2D):
 	if not shape.material: 
-		push_warning("No material found on shape to flash.", self)
 		return
 	shape.material.set("shader_param/intensity", 1)
 	shape.material.set("shader_param/white_to_black", 1)

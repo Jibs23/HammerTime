@@ -20,7 +20,6 @@ func die():
 	if Logic.game_state == Logic.GameState.PLAYING:
 		Logic.set_game_state(Logic.GameState.GAMEOVER)
 		return
-	Audio.stop_music()
 	super()
 
 func _ready() -> void:

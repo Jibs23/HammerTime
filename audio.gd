@@ -31,18 +31,12 @@ func play_sound(sound: AudioStream, source: Node=null, random_pitch:bool=true) -
 	audio_player.connect("finished", Callable(audio_player, "queue_free"))
 
 
-var current_music_player: AudioStreamPlayer = null
-func play_music(music_stream: AudioStream) -> AudioStreamPlayer:
-	var music_player = AudioStreamPlayer.new()
+var music_player: AudioStreamPlayer = null
+func play_music(music_stream: AudioStream) -> void:
 	music_player.set_bus("Music")
-	add_child(music_player)
 	music_player.stream = music_stream
 	music_player.play()
-	current_music_player = music_player
-	return music_player
 
 func stop_music() -> void:
-	if current_music_player:
-		current_music_player.stop()
-		current_music_player.queue_free()
-		current_music_player = null
+	if music_player:
+		music_player.stop()

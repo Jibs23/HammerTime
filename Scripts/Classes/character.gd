@@ -41,6 +41,7 @@ func _ready() -> void:
 	screen_check = preload("res://Scenes/screencheck.tscn").instantiate()
 	add_child(screen_check)
 	screen_check.connect("screen_exited", Callable(self, "_on_screen_exited"))
+	health_component.connect("damaged", Callable(self, "_on_hit"))
 
 func _on_screen_exited() -> void:
 	push_warning("%s has exited the screen and will be removed." % name)
@@ -52,3 +53,10 @@ func _on_tree_entered() -> void:
 func _on_body_entered(body: Node) -> void:
 	if body is Node2D:
 		hit_angle = body.get_rotation()
+
+@export var hurt_sound: AudioStream
+func _on_hit(damage:int) -> void:
+	if health_component.current_health <= 0:
+		return
+	if hurt_sound and hurt_sound != null:
+		Audio.play_sound(hurt_sound, self)
