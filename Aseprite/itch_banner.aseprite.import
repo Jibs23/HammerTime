@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://dh72hiha73873"
+path="res://.godot/imported/itch_banner.aseprite-e6f75b95c5a1475fc340a04c6dd9cab3.res"
+
+[deps]
+
+source_file="res://Aseprite/itch_banner.aseprite"
+dest_files=["res://.godot/imported/itch_banner.aseprite-e6f75b95c5a1475fc340a04c6dd9cab3.res"]
+
+[params]
+

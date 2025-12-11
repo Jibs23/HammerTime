@@ -27,7 +27,6 @@ func play_sound(sound: AudioStream, source: Node=null, random_pitch:bool=true) -
 	add_child(audio_player)
 	audio_player.stream = sound
 	audio_player.play()
-	print("Playing sound: ", sound)
 	audio_player.connect("finished", Callable(audio_player, "queue_free"))
 
 
